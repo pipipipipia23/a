@@ -7996,9 +7996,9 @@ end
 if hasunlockzones("Cloud Forest") then
     local azb = plr.Character.HumanoidRootPart
     spawn(function()
-        while true do wait(30)
+        while true do wait(60 * 10)
             pcall(function()
-                sendkey('A')
+                clickz('3')
             end)
         end
     end)
