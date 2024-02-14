@@ -8256,7 +8256,7 @@ if hasunlockzones("Cloud Forest") then
                         getgenv().clickfish = false
                         local tick1 = tick()
                         repeat wait()
-                        until tick() - tick1 > 2.7
+                        until tick() - tick1 > 2.8
                         local args = {
                             [1] = "AdvancedFishing",
                             [2] = "RequestReel"
