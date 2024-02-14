@@ -7999,7 +7999,7 @@ if hasunlockzones("Cloud Forest") then
         getconnections(game:GetService("Players").LocalPlayer.PlayerGui["_MISC"].Instancing.BottomButtons.BUTTONS.Home.Activated)[1]:Fire()
     end
     spawn(function()
-        while true do wait(60)
+        while true do wait(400)
             pcall(function()
                 print('asdasd')
                 clickz('3')
