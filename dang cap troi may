@@ -7992,6 +7992,12 @@ function sendkey(key)
     game:GetService("VirtualInputManager"):SendKeyEvent(false, Enum.KeyCode[key], false, game)
 end
 
+spawn(function()
+    while true do wait(5)
+        game:GetService("ReplicatedStorage").Network:FindFirstChild("Idle Tracking: Stop Timer"):FireServer()
+    end
+end)
+
 if hasunlockzones("Cloud Forest") then
     local azb = plr.Character.HumanoidRootPart
     function clickz(text)
