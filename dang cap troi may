@@ -7996,8 +7996,9 @@ end
 if hasunlockzones("Cloud Forest") then
     local azb = plr.Character.HumanoidRootPart
     spawn(function()
-        while true do wait(60 * 10)
+        while true do wait(60 * 7)
             pcall(function()
+                print('a')
                 clickz('3')
             end)
         end
@@ -8586,6 +8587,5 @@ else
     
     while true do wait()
         local a,b = pcall(unlockmap)
-        print(a,b)
     end
 end
