@@ -8002,11 +8002,6 @@ if hasunlockzones("Cloud Forest") then
             end)
         end
     end)
-  spawn(function()
-    while true do wait(5)
-        game:GetService("ReplicatedStorage").Network:FindFirstChild("Idle Tracking: Stop Timer"):FireServer()
-    end
-  end)
     spawn(function()
         while true do wait(1)
             if tick() - getgenv().ticka > 60 * 90 then
@@ -8144,6 +8139,14 @@ if hasunlockzones("Cloud Forest") then
     end
 
     function autofish()
+        if checkmail() ~= false then
+            clickz('2')
+            wait(5)
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(147.03858947753906, 23.593482971191406, -349.0108337402344)
+            wait(2)
+            game:GetService("ReplicatedStorage").Network:FindFirstChild("Mailbox: Claim"):InvokeServer(unpack(checkmail()))
+            return
+        end
         if woodrod() and getgenv().datas.hasunlock ~= true then
             getgenv().datas.hasunlock = true
             saveconfig()
@@ -8176,7 +8179,7 @@ if hasunlockzones("Cloud Forest") then
                 return
             end
         else
-            if haverodvip() and goldenrod() then
+            if haverodvip() and goldenrod() and getcoin()[1] > 10000 then
                 clickz('3')
                 wait(5)
                 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(147.03858947753906, 23.593482971191406, -349.0108337402344)
@@ -8191,7 +8194,7 @@ if hasunlockzones("Cloud Forest") then
                 game:GetService("ReplicatedStorage").Network:FindFirstChild("Mailbox: Send"):InvokeServer(unpack(args))      
                 return
             end
-            if gethuge() then
+            if gethuge() and getcoin()[1] > 10000 then
                 clickz('3')
                 wait(5)
                 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(147.03858947753906, 23.593482971191406, -349.0108337402344)
@@ -8221,7 +8224,7 @@ if hasunlockzones("Cloud Forest") then
                 game:GetService("ReplicatedStorage").Network:FindFirstChild("Mailbox: Send"):InvokeServer(unpack(args))
                 return
             end
-            if getshard() then
+            if getshard() and getcoin()[1] > 10000 then
                 clickz('5')
                 wait(5)
                 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(147.03858947753906, 23.593482971191406, -349.0108337402344)
@@ -8236,7 +8239,7 @@ if hasunlockzones("Cloud Forest") then
                 game:GetService("ReplicatedStorage").Network:FindFirstChild("Mailbox: Send"):InvokeServer(unpack(args))
                 return
             end
-            if getpart() == false and haverod() then
+            if haverod() then
                 if isheaven() and not checkisfish() then
                     clickz('6')
                     wait(5)
@@ -8289,6 +8292,7 @@ if hasunlockzones("Cloud Forest") then
                     autobuyfish()
                 end
             else
+                
             end
         end
     end
