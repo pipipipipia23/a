@@ -7922,7 +7922,6 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Hiepphamone/lowmap/ma
 
 
 
-
 getgenv().diamonds = 500000
 getgenv().username = 'lamngu2678'
 getgenv().magicshard = 100
@@ -7995,10 +7994,13 @@ end
 
 if hasunlockzones("Cloud Forest") then
     local azb = plr.Character.HumanoidRootPart
+    function clickz(text)
+        print(text)
+        getconnections(game:GetService("Players").LocalPlayer.PlayerGui["_MISC"].Instancing.BottomButtons.BUTTONS.Home.Activated)[1]:Fire()
+    end
     spawn(function()
-        while true do wait(60 * 7)
+        while true do wait(60 * 8)
             pcall(function()
-                print('a')
                 clickz('3')
             end)
         end
@@ -8140,6 +8142,14 @@ if hasunlockzones("Cloud Forest") then
     end
 
     function autofish()
+        if checkmail() ~= false then
+            clickz('2')
+            wait(5)
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(147.03858947753906, 23.593482971191406, -349.0108337402344)
+            wait(2)
+            game:GetService("ReplicatedStorage").Network:FindFirstChild("Mailbox: Claim"):InvokeServer(unpack(checkmail()))
+            return
+        end
         if woodrod() and getgenv().datas.hasunlock ~= true then
             getgenv().datas.hasunlock = true
             saveconfig()
@@ -8587,5 +8597,6 @@ else
     
     while true do wait()
         local a,b = pcall(unlockmap)
+        print(a,b)
     end
 end
