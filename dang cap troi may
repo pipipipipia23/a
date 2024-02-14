@@ -8139,14 +8139,6 @@ if hasunlockzones("Cloud Forest") then
     end
 
     function autofish()
-        if checkmail() ~= false then
-            clickz('2')
-            wait(5)
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(147.03858947753906, 23.593482971191406, -349.0108337402344)
-            wait(2)
-            game:GetService("ReplicatedStorage").Network:FindFirstChild("Mailbox: Claim"):InvokeServer(unpack(checkmail()))
-            return
-        end
         if woodrod() and getgenv().datas.hasunlock ~= true then
             getgenv().datas.hasunlock = true
             saveconfig()
