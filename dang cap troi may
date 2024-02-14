@@ -7939,7 +7939,7 @@ if game.PlaceId == 2753915549 then
     ts:Teleport(8737899170, p)
 end
 getgenv().ticka = tick()
-
+game:GetService("StarterPlayer").StarterPlayerScripts.Scripts.Core["Idle Tracking"].Disabled = true
 local vu = game:GetService("VirtualUser")
 game:GetService("Players").LocalPlayer.Idled:connect(function()
     vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
@@ -7999,8 +7999,9 @@ if hasunlockzones("Cloud Forest") then
         getconnections(game:GetService("Players").LocalPlayer.PlayerGui["_MISC"].Instancing.BottomButtons.BUTTONS.Home.Activated)[1]:Fire()
     end
     spawn(function()
-        while true do wait(60 * 8)
+        while true do wait(60)
             pcall(function()
+                print('asdasd')
                 clickz('3')
             end)
         end
@@ -8142,14 +8143,6 @@ if hasunlockzones("Cloud Forest") then
     end
 
     function autofish()
-        if checkmail() ~= false then
-            clickz('2')
-            wait(5)
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(147.03858947753906, 23.593482971191406, -349.0108337402344)
-            wait(2)
-            game:GetService("ReplicatedStorage").Network:FindFirstChild("Mailbox: Claim"):InvokeServer(unpack(checkmail()))
-            return
-        end
         if woodrod() and getgenv().datas.hasunlock ~= true then
             getgenv().datas.hasunlock = true
             saveconfig()
@@ -8597,6 +8590,5 @@ else
     
     while true do wait()
         local a,b = pcall(unlockmap)
-        print(a,b)
     end
 end
