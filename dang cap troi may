@@ -7901,8 +7901,22 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Hiepphamone/lowmap/ma
 
 
 
-
-
+repeat wait() until game.Players
+repeat wait() until game.Players.LocalPlayer
+repeat wait() until game.ReplicatedStorage
+repeat wait() until game:GetService("Players").LocalPlayer:FindFirstChild("PlayerGui")
+repeat wait() until game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Main")
+getgenv().ticka = tick()
+local plr = game.Players.LocalPlayer
+local Client = require(game.ReplicatedStorage.Library.Client)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Hiepphamone/lowmap/main/lowmap"))()
+spawn(function()
+    while true do wait(1)
+        if tick() - getgenv().ticka > 60 * 10 then
+            game:Shutdown()
+        end
+    end
+end)
 
 function dbuoi()
     for i,v in pairs(game:GetService("Workspace")["__THINGS"].Orbs:GetChildren()) do
@@ -8162,104 +8176,137 @@ function checkmail()
     end
 end
 
-function unlockmap()
-    local a = Client.Save.Get()
-    local b = Client.RankCmds.GetMaxPurchasableEquipSlots()
-    local abz = Client.RebirthCmds.GetNextRebirth()
-    if checkmail() ~= false then
-        wait(5)
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(147.03858947753906, 23.593482971191406, -349.0108337402344)
-        wait(2)
-        game:GetService("ReplicatedStorage").Network:FindFirstChild("Mailbox: Claim"):InvokeServer(unpack(checkmail()))
-        return
-    end
-    if hasunlockzones("Rainbow Road") and abz == nil and game.PlaceId ~= 16498369169 then
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-62.38117218017578, 208.9638671875, 6744.44775390625)
-        game:GetService("ReplicatedStorage").Network.RequestTechRocket:FireServer()
-        return 
-    end
-    if a.MaxPetsEquipped < b + 4 and hasunlockzones("Green Forest") and game.PlaceId ~= 16498369169 then
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(691.4805297851562, 16.557279586791992, -251.11878967285156)
-        for i =1 , b do
-            local args = {
-                [1] = i
-            }
-            
-            game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("EquipSlotsMachine_RequestPurchase"):InvokeServer(unpack(args))
+if game.PlaceId == 16498369169 then
+    game:GetService("ReplicatedStorage").Network.Pets_ToggleFavoriteMode:FireServer()
+    wait(1)
+    game:GetService("ReplicatedStorage").Network.Pets_ToggleFavoriteMode:FireServer()
+end
+
+if hasunlockzones("Cyber Base Camp") then
+    function unlockmap()
+        local a = Client.Save.Get()
+        local b = Client.RankCmds.GetMaxPurchasableEquipSlots()
+        local abz = Client.RebirthCmds.GetNextRebirth()
+        if checkmail() ~= false then
+            wait(5)
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(147.03858947753906, 23.593482971191406, -349.0108337402344)
+            wait(2)
+            game:GetService("ReplicatedStorage").Network:FindFirstChild("Mailbox: Claim"):InvokeServer(unpack(checkmail()))
+            return
         end
-    else
-        if getlocation() ~= false then
-            if (plr.Character.HumanoidRootPart.Position - getlocation().Position).Magnitude > 30 then
-                plr.Character.HumanoidRootPart.CFrame = getlocation().CFrame * CFrame.new(0,10,0)
+        if Client.PetCmds.IsFavoriteModeEnabled() == true then
+            game:GetService("ReplicatedStorage").Network.Pets_ToggleFavoriteMode:FireServer()
+        end
+        -- if hasunlockzones("Rainbow Road") then
+        --     if game.PlaceId == 16498369169 then
+        --         game:GetService("ReplicatedStorage").Network.World1Teleport:InvokeServer()
+        --         wait(.5)
+        --         game:Shutdown()
+        --     end
+        -- end
+        if hasunlockzones("Rainbow Road") and abz == nil and game.PlaceId ~= 16498369169 then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-62.38117218017578, 208.9638671875, 6744.44775390625)
+            game:GetService("ReplicatedStorage").Network.RequestTechRocket:FireServer()
+            return 
+        end
+        if a.MaxPetsEquipped < b + 4 and hasunlockzones("Green Forest") and game.PlaceId ~= 16498369169 and b < 50 then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(691.4805297851562, 16.557279586791992, -251.11878967285156)
+            for i =1 , b do
+                local args = {
+                    [1] = i
+                }
+                
+                game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("EquipSlotsMachine_RequestPurchase"):InvokeServer(unpack(args))
             end
         else
-            plr.Character.HumanoidRootPart.CFrame = getfoderlastmap().CFrame * CFrame.new(0,10,0)
+            if getlocation() ~= false then
+                if (plr.Character.HumanoidRootPart.Position - getlocation().Position).Magnitude > 30 then
+                    plr.Character.HumanoidRootPart.CFrame = getlocation().CFrame * CFrame.new(0,10,0)
+                end
+            else
+                plr.Character.HumanoidRootPart.CFrame = getfoderlastmap().CFrame * CFrame.new(0,10,0)
+            end
         end
     end
-end
 
-function click2(a)
-    game:GetService("VirtualInputManager"):SendMouseButtonEvent(a.AbsolutePosition.X+a.AbsoluteSize.X-50,a.AbsolutePosition.Y+50,0,true,a,1)
-    game:GetService("VirtualInputManager"):SendMouseButtonEvent(a.AbsolutePosition.X+a.AbsoluteSize.X-50,a.AbsolutePosition.Y+50,0,false,a,1)
-end
+    function click2(a)
+        game:GetService("VirtualInputManager"):SendMouseButtonEvent(a.AbsolutePosition.X+a.AbsoluteSize.X-50,a.AbsolutePosition.Y+50,0,true,a,1)
+        game:GetService("VirtualInputManager"):SendMouseButtonEvent(a.AbsolutePosition.X+a.AbsoluteSize.X-50,a.AbsolutePosition.Y+50,0,false,a,1)
+    end
 
-spawn(function()
-    while true do wait(1)
-        pcall(function() 
+    spawn(function()
+        while true do wait(1)
+            pcall(function() 
+                click2(game:GetService("Players").LocalPlayer.PlayerGui.Message.Frame.Contents.Ok)
+            end)
+        end
+    end)
+
+    function getfruit()
+        local Client = require(game.ReplicatedStorage.Library.Client)
+        for i,v in pairs(Client.InventoryCmds.State().container._store._byType.Fruit._byUID) do
+            Client.FruitCmds.Consume(i)
+            wait(1)
             click2(game:GetService("Players").LocalPlayer.PlayerGui.Message.Frame.Contents.Ok)
+        end
+    end
+
+    spawn(function()
+        while true do wait(10)
+            pcall(getfruit)
+        end
+    end)
+
+    function click2(a)
+        game:GetService("VirtualInputManager"):SendMouseButtonEvent(a.AbsolutePosition.X+a.AbsoluteSize.X-50,a.AbsolutePosition.Y+50,0,true,a,1)
+        game:GetService("VirtualInputManager"):SendMouseButtonEvent(a.AbsolutePosition.X+a.AbsoluteSize.X-50,a.AbsolutePosition.Y+50,0,false,a,1)
+    end
+
+    function click3(a)
+        game:GetService("VirtualInputManager"):SendMouseButtonEvent(a.AbsolutePosition.X+a.AbsoluteSize.X-100,a.AbsolutePosition.Y+100,0,true,a,1)
+        game:GetService("VirtualInputManager"):SendMouseButtonEvent(a.AbsolutePosition.X+a.AbsoluteSize.X-100,a.AbsolutePosition.Y+100,0,false,a,1)
+    end
+
+    function detc4()
+        click2(game:GetService("Players").LocalPlayer.PlayerGui.Rank.Frame.Side.Balance)
+        click3(game:GetService("Players").LocalPlayer.PlayerGui.Rank.Frame.Side.Balance)
+    end
+    getgenv().numberdaily = 1
+    function whatthef()
+        local args = {
+            [1] = getgenv().numberdaily
+        }
+        game:GetService("ReplicatedStorage").Network:FindFirstChild("Redeem Free Gift"):InvokeServer(unpack(args))
+        getgenv().numberdaily = getgenv().numberdaily + 1
+        if getgenv().numberdaily >= 12 then
+            getgenv().numberdaily = 1
+        end
+    end
+
+
+    game:GetService("RunService").Stepped:Connect(function()
+        pcall(collectrank)
+        pcall(detc4)
+        pcall(whatthef)
+    end)    
+
+    while true do wait()
+        local a,b = pcall(unlockmap)
+        print(a,b)
+    end
+else
+    while true do wait()
+        pcall(function()
+            local Client = require(game.ReplicatedStorage.Library.Client)
+            local a = Client.Save.Get()
+            for i,v in pairs(a.HiddenPresents) do
+                local args = {
+                    [1] = v.ID
+                }
+                
+                game:GetService("ReplicatedStorage").Network:FindFirstChild("Hidden Presents: Found"):InvokeServer(unpack(args))
+                wait(2)
+            end
         end)
     end
-end)
-
-function getfruit()
-    local Client = require(game.ReplicatedStorage.Library.Client)
-    for i,v in pairs(Client.InventoryCmds.State().container._store._byType.Fruit._byUID) do
-        Client.FruitCmds.Consume(i)
-        wait(1)
-        click2(game:GetService("Players").LocalPlayer.PlayerGui.Message.Frame.Contents.Ok)
-    end
-end
-
-spawn(function()
-    while true do wait(10)
-        pcall(getfruit)
-    end
-end)
-
-function click2(a)
-    game:GetService("VirtualInputManager"):SendMouseButtonEvent(a.AbsolutePosition.X+a.AbsoluteSize.X-50,a.AbsolutePosition.Y+50,0,true,a,1)
-    game:GetService("VirtualInputManager"):SendMouseButtonEvent(a.AbsolutePosition.X+a.AbsoluteSize.X-50,a.AbsolutePosition.Y+50,0,false,a,1)
-end
-
-function click3(a)
-    game:GetService("VirtualInputManager"):SendMouseButtonEvent(a.AbsolutePosition.X+a.AbsoluteSize.X-100,a.AbsolutePosition.Y+100,0,true,a,1)
-    game:GetService("VirtualInputManager"):SendMouseButtonEvent(a.AbsolutePosition.X+a.AbsoluteSize.X-100,a.AbsolutePosition.Y+100,0,false,a,1)
-end
-
-function detc4()
-    click2(game:GetService("Players").LocalPlayer.PlayerGui.Rank.Frame.Side.Balance)
-    click3(game:GetService("Players").LocalPlayer.PlayerGui.Rank.Frame.Side.Balance)
-end
-getgenv().numberdaily = 1
-function whatthef()
-    local args = {
-        [1] = getgenv().numberdaily
-    }
-    game:GetService("ReplicatedStorage").Network:FindFirstChild("Redeem Free Gift"):InvokeServer(unpack(args))
-    getgenv().numberdaily = getgenv().numberdaily + 1
-    if getgenv().numberdaily >= 12 then
-        getgenv().numberdaily = 1
-    end
-end
-
-
-game:GetService("RunService").Stepped:Connect(function()
-    pcall(collectrank)
-    pcall(detc4)
-    pcall(whatthef)
-end)    
-
-while true do wait()
-    local a,b = pcall(unlockmap)
-    print(a,b)
 end
