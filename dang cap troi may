@@ -8180,7 +8180,7 @@ if game.PlaceId == 16498369169 then
     game:GetService("ReplicatedStorage").Network.Pets_ToggleFavoriteMode:FireServer()
 end
 
-if hasunlockzones("Cyber Base Camp") then
+if not hasunlockzones("Cyber Base Camp") then
     function unlockmap()
         local a = Client.Save.Get()
         local b = Client.RankCmds.GetMaxPurchasableEquipSlots()
