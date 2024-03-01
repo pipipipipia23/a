@@ -7899,8 +7899,6 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Hiepphamone/lowmap/ma
 
 
 
-
-
 repeat wait() until game.Players
 repeat wait() until game.Players.LocalPlayer
 repeat wait() until game.ReplicatedStorage
