@@ -120,7 +120,7 @@ end
 function getboost()
     local v48 = v1.Save.Get();
     for i,v in pairs(v48.BoostsInventory) do
-        if tonumber(v) ~= 0 then
+        if tonumber(v) ~= 0 and table.find(boost,i) then
             Client.Network.Fire("Activate Boost",i)
         end
     end
