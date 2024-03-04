@@ -238,7 +238,7 @@ function getahihi()
 end
 
 function main()
-    if getgenv().statusdc == false then
+    if getgenv().statusdc == false and getgenv().sendmail == false then
         teleportto('Doodle Shop')
         if getgenv().config.egg == 1 then
             getroll(false, false)
@@ -293,38 +293,40 @@ function getpetdc()
     local main = v1.Save.Get()
     local getpetqueue = main.DaycareQueue
     local getdata = {}
-    if getgenv().config.count_pet_daycare - #getpetqueue > 0 then
-        getgenv().statusdc= true
-        if not game:GetService("Workspace")["__MAP"].Interactive:FindFirstChild("Daycare") then
-            teleportmain("Spawn")
-            return
-        end
-        wait(2)
-        plr.Character.HumanoidRootPart.CFrame = game:GetService("Workspace")["__MAP"].Interactive.Daycare.Pad.CFrame
-		wait(2)
-		Client.Network.Invoke("Daycare: Enroll", ahih1i(getgenv().config.count_pet_daycare - #getpetqueue))
-        return
-    else
-        getgenv().statusdc = true
-        for i,v in pairs(getpetqueue) do
-			local gettimedc = v1.Shared.DaycareComputeRemainingTime(main, getpetqueue[i])
-			if gettimedc <= 2 then
-				table.insert(getdata,getpetqueue[i]["Pet"]["uid"])
-			end
-		end
-        if #getdata == #getpetqueue then
+    if getgenv().sendmail == false then
+        if getgenv().config.count_pet_daycare - #getpetqueue > 0 then
+            getgenv().statusdc= true
             if not game:GetService("Workspace")["__MAP"].Interactive:FindFirstChild("Daycare") then
-				teleportmain("Spawn")
+                teleportmain("Spawn")
                 return
-			end
+            end
+            wait(2)
             plr.Character.HumanoidRootPart.CFrame = game:GetService("Workspace")["__MAP"].Interactive.Daycare.Pad.CFrame
             wait(2)
-            Client.Network.Invoke("Daycare: Claim", nil)
-            wait(2)
+            Client.Network.Invoke("Daycare: Enroll", ahih1i(getgenv().config.count_pet_daycare - #getpetqueue))
+            return
         else
-            getgenv().statusdc = false
+            getgenv().statusdc = true
+            for i,v in pairs(getpetqueue) do
+                local gettimedc = v1.Shared.DaycareComputeRemainingTime(main, getpetqueue[i])
+                if gettimedc <= 2 then
+                    table.insert(getdata,getpetqueue[i]["Pet"]["uid"])
+                end
+            end
+            if #getdata == #getpetqueue then
+                if not game:GetService("Workspace")["__MAP"].Interactive:FindFirstChild("Daycare") then
+                    teleportmain("Spawn")
+                    return
+                end
+                plr.Character.HumanoidRootPart.CFrame = game:GetService("Workspace")["__MAP"].Interactive.Daycare.Pad.CFrame
+                wait(2)
+                Client.Network.Invoke("Daycare: Claim", nil)
+                wait(2)
+            else
+                getgenv().statusdc = false
+            end
+            return
         end
-        return
     end
     getgenv().statusdc = false
 end
@@ -391,8 +393,92 @@ function autobostsv()
     end
 end
 
+function webhook(status)
+    spawn(function()
+        local url = getgenv().config.webhook
+        local data = {
+        ["content"] = "Auto Comet",
+        ["embeds"] = {
+            {
+                ["title"] = "Noti!",
+                ["description"] = "Username: " .."||".. game.Players.LocalPlayer.Name.. "||".. "\nHuge You Got: " ..  status,
+                ["type"] = "rich",
+                ["color"] = tonumber(0xff8200),
+            }
+        }
+        }
+        local newdata = game:GetService("HttpService"):JSONEncode(data)
+
+        local headers = {
+        ["content-type"] = "application/json"
+        }
+        request = http_request or request or HttpPost or syn.request
+        local abcdef = {Url = url, Body = newdata, Method = "POST", Headers = headers}
+        request(abcdef)
+    end)
+end
+
+function setfirstdata()
+    local v48 = v1.Save.Get();
+    getgenv().firstdata = {}
+    for i,v in pairs(v48.Pets) do
+        local petcmd1 = v1.PetCmds.Get(v.uid)
+        local vien1,vien2 = pcall(function()
+            thuvien = v1.Directory.Pets[petcmd1.id]
+        end)
+        if vien1 ~= false then
+            if string.lower(thuvien.name, 'huge') then
+                table.insert(getgenv().firstdata, v.uid)
+            end
+        end
+    end 
+    return getgenv().firstdata
+end
+
+function get(thistype)
+    if game.PlaceId == 10321372166 and string.find(string.lower(thistype), "coins") then
+        return Save().HardcoreCurrency[thistype]
+    else
+        return Save()[thistype]
+    end
+end
+
+function ComposeMail(name,pet)    
+    return {
+        Recipient = tostring(name), 
+        Message = "????? Nhin cai lon tao", 
+        Pets = pet, 
+        Diamonds = 0,
+    }
+end
+
+function sendneknek(a,b)
+    print(Client.Network.Invoke("Send Mail",ComposeMail(a,b)))
+end
+getgenv().sendmail = false
+function autosendmail()
+    if get("Diamonds") > 100000 and #setfirstdata() > 0 then
+        getgenv().sendmail = true
+        teleportmain("Shop")
+        wait(5)
+        plr.Character.HumanoidRootPart.CFrame = CFrame.new(257.4012756347656, 97.88801574707031, 351.0747985839844)
+        wait(1)
+        sendneknek(getgenv().Nameaccmain,setfirstdata())
+        wait(3)
+        webhook('Sent Huge by account: ' .. plr.Name)
+    else
+        getgenv().sendmail = false
+    end
+end
+
 spawn(function()
-    while true do wait(30)
+    while getgenv().config.send_mail do wait(10)
+        pcall(autosendmail)
+    end
+end)
+
+spawn(function()
+    while getgenv().config.boostserver do wait(30)
         pcall(autobostsv)
     end
 end)
