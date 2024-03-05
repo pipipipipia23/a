@@ -204,6 +204,8 @@ function teleportmain(texta, cframe)
     local v17 = v1.Directory.Areas[texta]
     if v1.WorldCmds.Get() ~= v17.world then
         print(hihi.Teleport(texta,true))
+    else
+        return true
     end
 end
 
@@ -225,8 +227,10 @@ function getboost()
     local v48 = v1.Save.Get()
     local get = v48.Boosts
     for i,v in pairs(v48.BoostsInventory) do
-        if tonumber(v) ~= 0 and table.find(boost,i) and (get[i] ~= nil) then
-            Client.Network.Fire("Activate Boost",i)
+        if tonumber(v) ~= 0 and table.find(getgenv().config.boost,i) then
+            if get[i] == nil then
+                Client.Network.Fire("Activate Boost",i)
+            end
         end
     end
 end
@@ -261,7 +265,7 @@ function ahih1i(num)
     for i,v in pairs(v48.Pets) do 
         if not table.find(petblacklist , v48.Pets[i]["uid"]) then
             local checkne = v1.Directory.Pets[v48.Pets[i]["id"]]
-            if checkne.rarity ~= "Event" then
+            if checkne.rarity ~= "Event" and checkne.rarity ~= "Exclusive" then
                 table.insert(petmain, {tonumber(v48.Pets[i]["s"]), v48.Pets[i]["uid"]})
             end
         end
@@ -397,7 +401,7 @@ function webhook(status)
     spawn(function()
         local url = getgenv().config.webhook
         local data = {
-        ["content"] = "Auto Comet",
+        ["content"] = "Webhook",
         ["embeds"] = {
             {
                 ["title"] = "Noti!",
@@ -427,7 +431,7 @@ function setfirstdata()
             thuvien = v1.Directory.Pets[petcmd1.id]
         end)
         if vien1 ~= false then
-            if string.lower(thuvien.name, 'huge') then
+            if string.find(string.lower(thuvien.name),'huge') then
                 table.insert(getgenv().firstdata, v.uid)
             end
         end
@@ -471,6 +475,7 @@ end
 
 getgenv().sendmail = false
 function autosendmail()
+    print(get("Diamonds") > 100000 and #setfirstdata() > 0)
     if get("Diamonds") > 100000 and #setfirstdata() > 0 then
         getgenv().sendmail = true
         local args = {
@@ -479,9 +484,10 @@ function autosendmail()
             }
         }
         Client.Network.Invoke("Lock Pet", unpack(args))
-        teleportmain("Shop")
-        wait(5)
-        plr.Character.HumanoidRootPart.CFrame = CFrame.new(257.4012756347656, 97.88801574707031, 351.0747985839844)
+        if teleportmain("Shop") == true then
+            wait(5)
+            plr.Character.HumanoidRootPart.CFrame = CFrame.new(257.4012756347656, 97.88801574707031, 351.0747985839844)    
+        end
         wait(1)
         sendneknek(getgenv().config.name_mail,{setfirstdata()[1]})
         wait(3)
@@ -491,8 +497,23 @@ function autosendmail()
     end
 end
 
+function jump()
+    game:GetService("VirtualInputManager"):SendKeyEvent(true, 32, false, game)
+    wait(1)
+    game:GetService("VirtualInputManager"):SendKeyEvent(false, 32, false, game)
+end
+
 spawn(function()
-    while getgenv().config.send_mail do wait(10)
+    while true do wait(30)
+        pcall(function()
+            jump()
+        end)
+    end
+end)
+
+
+spawn(function()
+    while getgenv().config.send_mail do wait()
         pcall(autosendmail)
     end
 end)
