@@ -1,0 +1,124 @@
+if game.PlaceId ~= 14082129854 then
+    repeat wait() until game.Players
+    repeat wait() until game.Players.LocalPlayer
+    repeat wait() until game.ReplicatedStorage
+    local plr = game.Players.LocalPlayer
+    function getstatusbtn()
+        return game:GetService("Players").LocalPlayer.PlayerGui.Match.MatchFinish.MatchFinishFrame.EndOptions.PlayAgain.ButtonFrame.PlayAgainButton.ContentText == "Play Again"
+    end
+    game:GetService("Players").LocalPlayer.PlayerGui.MainFrames.NotificationFrame:Destroy()
+    spawn(function()
+        while true do wait()
+            pcall(function()
+                plr.Character.HumanoidRootPart.CFrame = workspace.Lifts.PalmParadise:GetChildren()[4].BasePart.CFrame
+                wait(2)
+                function click(a)
+                    game:GetService("VirtualInputManager"):SendMouseButtonEvent(a.AbsolutePosition.X+a.AbsoluteSize.X-50,a.AbsolutePosition.Y+50,0,true,a,1)
+                    game:GetService("VirtualInputManager"):SendMouseButtonEvent(a.AbsolutePosition.X+a.AbsoluteSize.X-50,a.AbsolutePosition.Y+50,0,false,a,1)
+                end
+
+                if game:GetService("Players").LocalPlayer.PlayerGui.Lobby.QueueFrame.Visible == true then
+                    click(game:GetService("Players").LocalPlayer.PlayerGui.Lobby.QueueFrame.Start)
+                end
+            end)
+        end
+    end)
+else
+    repeat wait() until game.Players
+    repeat wait() until game.Players.LocalPlayer
+    repeat wait() until game.ReplicatedStorage
+    getgenv().skibidi = {}
+    for charCode = string.byte('a'), string.byte('z') do
+        table.insert(getgenv().skibidi, string.char(charCode))
+    end
+    for charCode = string.byte('A'), string.byte('Z') do
+        table.insert(getgenv().skibidi, string.char(charCode))
+    end
+    function getstatusbtn()
+        if game:GetService("Players").LocalPlayer.PlayerGui.Match.MatchFinish.Visible == true then
+            return game:GetService("Players").LocalPlayer.PlayerGui.Match.MatchFinish.MatchFinishFrame.EndOptions.PlayAgain.ButtonFrame.PlayAgainButton.ContentText == "Play Again"
+        end
+        return false
+    end
+    function click(a)
+        game:GetService("VirtualInputManager"):SendMouseButtonEvent(a.AbsolutePosition.X+a.AbsoluteSize.X-50,a.AbsolutePosition.Y+50,0,true,a,1)
+        game:GetService("VirtualInputManager"):SendMouseButtonEvent(a.AbsolutePosition.X+a.AbsoluteSize.X-50,a.AbsolutePosition.Y+50,0,false,a,1)
+    end
+    
+    spawn(function()
+        while true do wait(.1)
+            pcall(function()
+                if tostring(game:GetService("Players").LocalPlayer.PlayerGui.Match.WaveInfo.AutoSkip.OnAndOff.BackgroundColor3) == '1, 0, 0' then
+                    getconnections(game:GetService("Players").LocalPlayer.PlayerGui.Match.WaveInfo.AutoSkip.OnAndOff.Activated)[1]:Function()
+                end
+                if getstatusbtn() then
+                    repeat wait(8)
+                        click(game:GetService("Players").LocalPlayer.PlayerGui.Match.MatchFinish.MatchFinishFrame.EndOptions.PlayAgain.ButtonFrame.PlayAgainButton)
+                        wait(.2)
+                    until not getstatusbtn()
+                else
+                    click(game:GetService("Players").LocalPlayer.PlayerGui.VotingFrame.VoteFrame.VoteMainFrame.MainFrame.Nightmare.Vote)
+                end
+            end)
+        end
+    end)
+    getgenv().savemain = false
+    getgenv().oldremote = ''
+    function spawntuong(a)
+        if getgenv().savemain == false then
+            for i,v in pairs(getgenv().skibidi) do
+                getgenv().oldremote = v
+                local args = {
+                    [1] = {
+                        [1] = {
+                            [1] = "MinigunCamerawoman",
+                            [2] = a,
+                            [3] = 1
+                        },
+                        [2] = v
+                    }
+                }
+                
+                game:GetService("ReplicatedStorage").dataRemoteEvent:FireServer(unpack(args))                
+                wait(1)
+                print(v)
+                if workspace.Troops:FindFirstChild('MinigunCamerawoman') then
+                    getgenv().savemain = v
+                    print(getgenv().oldremote)
+                    break
+                end
+            end
+        else
+            local args = {
+                [1] = {
+                    [1] = {
+                        [1] = "MinigunCamerawoman",
+                        [2] = a,
+                        [3] = 1
+                    },
+                    [2] = getgenv().oldremote
+                }
+            }
+            
+            game:GetService("ReplicatedStorage").dataRemoteEvent:FireServer(unpack(args))            
+        end
+        wait(1)
+    end
+    spawn(function()
+        while true do wait()
+            if game:GetService("ReplicatedStorage").MatchData.CurrentWave.Value >= 1 then
+                spawntuong(Vector3.new(111.189453125, -131.0299530029297, 140.77879333496094))
+                spawntuong(Vector3.new(111.0586929321289, -131.0299530029297, 134.90646362304688))
+                spawntuong(Vector3.new(111.04549407958984, -131.0299530029297, 130.29730224609375))
+                spawntuong(Vector3.new(111.21470642089844, -131.0299530029297, 144.81622314453125))
+                spawntuong(Vector3.new(110.86253356933594, -131.0299530029297, 147.71958923339844))
+                spawntuong(Vector3.new(111.08582305908203, -131.0299530029297, 151.7568817138672))
+                spawntuong(Vector3.new(111.0702896118164, -131.0299530029297, 154.61819458007812))
+                spawntuong(Vector3.new(100.25019836425781, -131.0299530029297, 152.11642456054688))
+                spawntuong(Vector3.new(99.4172134399414, -131.0299530029297, 146.81185913085938))
+                spawntuong(Vector3.new(99.01847076416016, -131.0299530029297, 155.85247802734375))
+                spawntuong(Vector3.new(99.41869354248047, -131.0299530029297, 140.04714965820312))
+            end
+        end
+    end)
+end
