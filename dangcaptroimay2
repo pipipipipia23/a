@@ -551,6 +551,6 @@ spawn(function()
     end
 end)
 
-while true do task.wait()
+while true do wait(.5)
     pcall(main)
 end
