@@ -432,7 +432,7 @@ function setfirstdata()
         end)
         if vien1 ~= false then
             if string.find(string.lower(thuvien.name),'huge') then
-                table.insert(getgenv().firstdata, v.uid)
+                return {v.uid, thuvien.name}
             end
         end
     end 
@@ -484,8 +484,6 @@ function autosendmail()
             }
         }
         Client.Network.Invoke("Lock Pet", unpack(args))
-        local mainpetcmd = v1.PetCmds.Get(setfirstdata()[1])
-        local thuvien = v1z.Directory.Pets[mainpetcmd.id]
         if teleportmain("Shop") == true then
             wait(5)
             plr.Character.HumanoidRootPart.CFrame = CFrame.new(257.4012756347656, 97.88801574707031, 351.0747985839844)    
@@ -493,7 +491,7 @@ function autosendmail()
         wait(1)
         sendneknek(getgenv().config.name_mail,{setfirstdata()[1]})
         wait(3)
-        webhook('Sent Huge: ' .. thuvien.name)
+        webhook('Sent Huge: ' .. setfirstdata()[2])
     else
         getgenv().sendmail = false
     end
@@ -551,6 +549,6 @@ spawn(function()
     end
 end)
 
-while true do wait(.5)
+while true do task.wait()
     pcall(main)
 end
