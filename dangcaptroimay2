@@ -353,15 +353,14 @@ function tablefind(a,b)
     return false
 end
 
-function findDifferences(table1, table2)
+function findDifferences(table2, table1)
     local differences = {}
 
     for _, value in ipairs(table1) do
         local found = false
         for _, v in ipairs(table2) do
-            if value == v then
+            if value == v and found == false then
                 found = true
-                break
             end
         end
         if not found then
